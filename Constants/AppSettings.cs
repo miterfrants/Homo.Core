@@ -4,7 +4,12 @@ using System.Net;
 
 namespace Homo.Core.Constants
 {
-    public class AppSettings
+    public interface IAppSettings
+    {
+        Common Common { get; set; }
+    }
+
+    public class AppSettings : IAppSettings
     {
         public Common Common { get; set; }
     }

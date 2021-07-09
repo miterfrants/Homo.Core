@@ -10,12 +10,13 @@ using Newtonsoft.Json;
 using Homo.Core.Helpers;
 using Homo.Core.Constants;
 
-namespace Homo.Core.Middleware
+namespace Homo.Core.Middlewares
 {
     public class ErrorHandlingMiddleware
     {
         private readonly RequestDelegate next;
         private string envName;
+        protected IServiceProvider _serviceProvider;
         public ErrorHandlingMiddleware(RequestDelegate next)
         {
             this.next = next;
@@ -30,13 +31,16 @@ namespace Homo.Core.Middleware
             catch (Exception ex)
             {
                 envName = env.EnvironmentName;
-                IOptions<AppSettings> config = serviceProvider.GetService<IOptions<AppSettings>>();
-                HandleExceptionAsync(context, ex, config.Value.Common.ErrorMappingPath);
+                _serviceProvider = serviceProvider;
+                IOptions<AppSettings> config = _serviceProvider.GetService<IOptions<AppSettings>>();
+                System.Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(config));
+                HandleExceptionAsync(context, ex, config);
             }
         }
 
-        private ActionResult<dynamic> HandleExceptionAsync(HttpContext context, Exception ex, string errorCodeMappingPath)
+        protected virtual ActionResult<dynamic> HandleExceptionAsync(HttpContext context, Exception ex, IOptions<IAppSettings> config)
         {
+            string errorCodeMappingPath = config.Value.Common.ErrorMappingPath;
             var code = HttpStatusCode.InternalServerError;
             string errorKey = "";
             string internalErrorMessage = "";
