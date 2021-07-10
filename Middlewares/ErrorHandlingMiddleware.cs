@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -22,7 +23,7 @@ namespace Homo.Core.Middlewares
             this.next = next;
         }
 
-        public async Task Invoke(HttpContext context, Microsoft.AspNetCore.Hosting.IWebHostEnvironment env, IServiceProvider serviceProvider)
+        public async Task Invoke(HttpContext context, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
             try
             {
@@ -33,7 +34,6 @@ namespace Homo.Core.Middlewares
                 envName = env.EnvironmentName;
                 _serviceProvider = serviceProvider;
                 IOptions<AppSettings> config = _serviceProvider.GetService<IOptions<AppSettings>>();
-                System.Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(config));
                 HandleExceptionAsync(context, ex, config);
             }
         }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-
-namespace Homo.Core.Constants
+﻿namespace Homo.Core.Constants
 {
     public interface IAppSettings
     {
