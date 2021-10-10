@@ -4,17 +4,6 @@ using System.Net;
 
 namespace Homo.Core.Constants
 {
-    public class ErrorObject
-    {
-        public int ErrorCode;
-        public string ErrorMessage;
-        public ErrorObject(int ErrorCode, string ErrorMessage)
-        {
-            this.ErrorCode = ErrorCode;
-            this.ErrorMessage = ErrorMessage;
-        }
-    }
-
     public class CustomException : Exception
     {
         public HttpStatusCode code;
